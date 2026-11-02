@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#171016">
@@ -10,10 +9,7 @@
 
 <style>
 * { box-sizing: border-box; }
-
-:root {
-  color-scheme: dark;
-}
+:root { color-scheme: dark; }
 
 body {
   margin: 0;
@@ -66,9 +62,7 @@ main {
   font-size: 16px;
 }
 
-.search:focus {
-  outline: 2px solid #ff8fbd;
-}
+.search:focus { outline: 2px solid #ff8fbd; }
 
 .grid {
   display: grid;
@@ -100,9 +94,7 @@ main {
   object-fit: cover;
 }
 
-.meta {
-  padding: 11px;
-}
+.meta { padding: 11px; }
 
 .rank {
   color: #ff8fbd;
@@ -124,6 +116,30 @@ main {
   color: #ff9bc5;
   text-decoration: underline;
 }
+
+.video-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: .75rem;
+}
+
+.video-links a,
+.video-links span {
+  color: #ff9bc5;
+  text-decoration: none;
+  border: 1px solid #79405b;
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+.video-links a:hover {
+  background: #482034;
+  text-decoration: underline;
+}
+
+.video-links span { color: #a98b9b; }
 
 .empty {
   text-align: center;
@@ -163,9 +179,7 @@ main {
   background: rgba(0,0,0,.94);
 }
 
-.photo-viewer.active {
-  display: flex;
-}
+.photo-viewer.active { display: flex; }
 
 .photo-viewer img {
   max-width: 95vw;
@@ -212,15 +226,12 @@ main {
 }
 
 @media (max-width: 380px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
+  .grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 
 <body>
-
 <header>
   <h1>My BEST30 Ⅱ</h1>
   <p>SEXY ACTRESS RANKING</p>
@@ -229,14 +240,7 @@ main {
 
 <main>
   <div class="count" id="count"></div>
-
-  <input
-    class="search"
-    id="search"
-    placeholder="名前で検索"
-    aria-label="名前で検索"
-  >
-
+  <input class="search" id="search" placeholder="名前で検索" aria-label="名前で検索">
   <div class="grid" id="grid"></div>
 
   <div class="empty" id="empty" hidden>
@@ -252,8 +256,7 @@ main {
   </div>
 </main>
 
-<a class="back-link"
-   href="https://neko330618-dot.github.io/kaito-ranking/">
+<a class="back-link" href="https://neko330618-dot.github.io/kaito-ranking/">
   My BEST30へ ↗
 </a>
 
@@ -264,15 +267,9 @@ main {
 
 <script>
 /*
-  ランキング登録欄
-
-  人物を追加するときは、この people の中に
-  rank・name・photo・link を追加します。
-
-  photo：写真のURL
-  link：公式プロフィールなどのURL
-
-  最初は空欄でスタートします。
+  fanzaUrl：FANZA出演作品一覧のURL
+  mgsUrl：MGS動画出演作品一覧のURL
+  URLが未入力の場合は空欄の表示になります。
 */
 
 const people = [
@@ -280,80 +277,105 @@ const people = [
     rank: 1,
     name: "明里つむぎ",
     photo: "https://cmore.jp/official/img/model/akari/akari.jpg",
-    link: "https://cmore.jp/official/model-akari.html"
+    link: "https://cmore.jp/official/model-akari.html",
+    fanzaUrl: "",
+    mgsUrl: ""
   },
   {
     rank: 2,
     name: "石川澪",
     photo: "https://alive-pro.tokyo/official/wp-content/uploads/2025/04/ishikawa03.jpg",
-    link: "https://alive-pro.tokyo/model/mio_ishikawa"
+    link: "https://alive-pro.tokyo/model/mio_ishikawa",
+    fanzaUrl: "",
+    mgsUrl: ""
   },
   {
     rank: 3,
     name: "北岡果林",
     photo: "https://mines-pro.jp/talent_images/_01_10970_1.jpg",
-    link: "https://mines-pro.jp/model/10970"
+    link: "https://mines-pro.jp/model/10970",
+    fanzaUrl: "",
+    mgsUrl: ""
   },
   {
     rank: 4,
     name: "幸村 泉希",
     photo: "https://mines-pro.jp/talent_images/1rafuYZ8_0355-4_11011_1.jpg",
-    link: "https://mines-pro.jp/model/11011"
+    link: "https://mines-pro.jp/model/11011",
+    fanzaUrl: "",
+    mgsUrl: ""
   },
   {
     rank: 5,
     name: "三田真鈴",
     photo: "https://awsimgsrc.dmm.co.jp/pics_dig/mono/actjpgs/mita_marin.jpg?w=125&h=125&f=webp&t=margin",
-    link: "https://video.dmm.co.jp/av/list/?actress=1087625&i3_ref=favorite&dmmref=favorite_list_favorite_actress"
+    link: "https://video.dmm.co.jp/av/list/?actress=1087625&i3_ref=favorite&dmmref=favorite_list_favorite_actress",
+    fanzaUrl: "",
+    mgsUrl: ""
   },
   {
     rank: 6,
     name: "鈴木希",
     photo: "https://awsimgsrc.dmm.co.jp/pics_dig/mono/actjpgs/suzuki_nozomi.jpg?w=125&h=125&f=webp&t=margin",
-    link: "https://video.dmm.co.jp/av/list/?actress=1109071&i3_ref=favorite&dmmref=favorite_list_favorite_actress4"
-  }
-    ,
+    link: "https://video.dmm.co.jp/av/list/?actress=1109071&i3_ref=favorite&dmmref=favorite_list_favorite_actress4",
+    fanzaUrl: "",
+    mgsUrl: ""
+  },
   {
     rank: 7,
     name: "miru",
     photo: "https://cmore.jp/official/img/model/miru/top_miru.jpg",
-    link: "https://cmore.jp/official/model-miru.html"
+    link: "https://cmore.jp/official/model-miru.html",
+    fanzaUrl: "",
+    mgsUrl: ""
   },
   {
     rank: 8,
     name: "瀬戸環奈",
     photo: "https://bstar-pro.com/images/models/355/2.webp",
-    link: "https://bstar-pro.com/model.html?mid=355"
+    link: "https://bstar-pro.com/model.html?mid=355",
+    fanzaUrl: "",
+    mgsUrl: ""
   },
   {
     rank: 9,
     name: "八掛うみ",
     photo: "https://msp.c.yimg.jp/images/v2/FUTi93tXq405grZVGgDqG_omiYkNVym1Sd6g5T38MuTBDc4e9p3cTQ3M1cJm6kfTKoQASZx0CYKMH_9CpeUMcQJH8zIOEPEMRLfAhuDlbpyh0f3MUGhJx3Yl-RRzlc_FRpXI8zagw7M7s6pqkyURoNtEBa1uLar3vNFb-CCICfGNJ6g6aGJLt-uJqmg_oIyi9dZ5hKMpCh55IVaKutm2Hgzxf8UKVbNGDmtjU_mYx-MucZcnl9nFAaQx4uB5ICpl/1AAUrgCj_400x400.jpg?errorImage=false",
-    link: "https://www.t-powers.co.jp/talent/%E5%85%AB%E6%8E%9B%E3%81%86%E3%81%BF/"
+    link: "https://www.t-powers.co.jp/talent/%E5%85%AB%E6%8E%9B%E3%81%86%E3%81%BF/",
+    fanzaUrl: "",
+    mgsUrl: ""
   },
   {
     rank: 10,
     name: "宮下玲奈",
     photo: "https://awsimgsrc.dmm.co.jp/pics_dig/mono/actjpgs/miyasita_rena2.jpg?w=40&h=40&f=webp&t=margin",
-    link: "https://video.dmm.co.jp/av/list/?key=%E5%AE%AE%E4%B8%8B%E7%8E%B2%E5%A5%88"
+    link: "https://video.dmm.co.jp/av/list/?key=%E5%AE%AE%E4%B8%8B%E7%8E%B2%E5%A5%88",
+    fanzaUrl: "",
+    mgsUrl: ""
   },
   {
     rank: 11,
     name: "浅野こころ",
     photo: "https://bstar-pro.com/images/models/315/2.webp",
-    link: "https://bstar-pro.com/model.html?mid=315"
+    link: "https://bstar-pro.com/model.html?mid=315",
+    fanzaUrl: "",
+    mgsUrl: ""
   },
-　 {
+  {
     rank: 12,
     name: "安達夕莉",
     photo: "https://bstar-pro.com/images/models/278/2.webp",
-    link: "https://bstar-pro.com/model.html?mid=278"
+    link: "https://bstar-pro.com/model.html?mid=278",
+    fanzaUrl: "",
+    mgsUrl: ""
   },
   {
     rank: 13,
     name: "金松季歩",
     photo: "https://bstar-pro.com/images/models/349/2.webp",
-    link: "https://bstar-pro.com/model.html?mid=349"
+    link: "https://bstar-pro.com/model.html?mid=349",
+    fanzaUrl: "",
+    mgsUrl: ""
   }
 ];
 
@@ -361,7 +383,6 @@ const grid = document.getElementById("grid");
 const count = document.getElementById("count");
 const empty = document.getElementById("empty");
 const search = document.getElementById("search");
-
 const viewer = document.getElementById("viewer");
 const viewerImage = document.getElementById("viewerImage");
 
@@ -377,8 +398,7 @@ function closePhoto() {
   viewerImage.src = "";
 }
 
-document.getElementById("close")
-  .addEventListener("click", closePhoto);
+document.getElementById("close").addEventListener("click", closePhoto);
 
 viewer.addEventListener("click", event => {
   if (event.target === viewer) closePhoto();
@@ -424,7 +444,29 @@ function makeCard(person) {
     name.rel = "noopener noreferrer";
   }
 
-  meta.append(rank, name);
+  const videoLinks = document.createElement("div");
+  videoLinks.className = "video-links";
+
+  const fanza = document.createElement(person.fanzaUrl ? "a" : "span");
+  fanza.textContent = "FANZA 出演作品";
+
+  if (person.fanzaUrl) {
+    fanza.href = person.fanzaUrl;
+    fanza.target = "_blank";
+    fanza.rel = "noopener noreferrer";
+  }
+
+  const mgs = document.createElement(person.mgsUrl ? "a" : "span");
+  mgs.textContent = "MGS動画 出演作品";
+
+  if (person.mgsUrl) {
+    mgs.href = person.mgsUrl;
+    mgs.target = "_blank";
+    mgs.rel = "noopener noreferrer";
+  }
+
+  videoLinks.append(fanza, mgs);
+  meta.append(rank, name, videoLinks);
   card.append(photo, meta);
 
   return card;
@@ -440,7 +482,6 @@ function draw() {
     .sort((a, b) => a.rank - b.rank);
 
   count.textContent = "登録メンバー：" + people.length + "人";
-
   empty.hidden = filtered.length !== 0;
 
   filtered.forEach(person => {
@@ -449,9 +490,7 @@ function draw() {
 }
 
 search.addEventListener("input", draw);
-
 draw();
 </script>
-
 </body>
 </html>
